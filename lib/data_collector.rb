@@ -88,7 +88,14 @@ class DataCollector
         result = plugin.run
         succeed result
       rescue StandardError => e
+        
+        Logger.debug "Exception thrown from plugin #{plugin.id}: #{e.message}"
+        e.backtrace.each do |line|
+          Logger.debug line
+        end
+
         fail e.message
+
       end
     end
 
