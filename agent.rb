@@ -68,10 +68,17 @@ payload = JSON.generate(data)
 Logger.debug 'Generated JSON payload:'
 Logger.debug payload
 
-uri = URI.parse("http://#{config['sherlock']['server']}:#{config['sherlock']['port']}/watson/snapshot")
-res = Net::HTTP.post_form(uri, {:payload => payload})
-if res.code.to_i == 200
-  Logger.info("Snapshot successfully posted the Sherlock server and assigned the ID #{res.body}")
+# Execute the HTTP request.
+url = URI.parse("http://#{config['sherlock']['server']}:#{config['sherlock']['port']}/watson/snapshot")
+Logger.info "Sending #{payload.length} byte JSON payload to #{url.to_s} via HTTP POST"
+http = Net::HTTP.new(url.host, url.port)
+request = Net::HTTP::Post.new(url.path)
+request.body = payload
+request['Content-Type'] = 'application/json'
+response = http.request(request)
+
+if response.code.to_i == 200
+  Logger.info("Snapshot successfully posted the Sherlock server and assigned the ID #{response.body}")
 else
-  Logger.fatal("Snapshot could not be posted to the Sherlock server - error #{res.code}: #{res.body}")
+  Logger.fatal("Snapshot could not be posted to the Sherlock server - error #{response.code}: #{response.body}")
 end
