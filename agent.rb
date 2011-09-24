@@ -65,6 +65,8 @@ Logger.info "Gathered information from #{PluginRegistry.plugins.size} available 
 
 # Send the data to the Sherlock server.
 payload = JSON.generate(data)
+Logger.debug 'Generated JSON payload:'
+Logger.debug payload
 
 uri = URI.parse("http://#{config['sherlock']['server']}:#{config['sherlock']['port']}/watson/snapshot")
 res = Net::HTTP.post_form(uri, {:payload => payload})
