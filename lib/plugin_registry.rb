@@ -28,7 +28,7 @@ class PluginRegistry
 
         # Check if the class name is defined (checking that the plugin is named
         # properly).
-        if Plugins.const_defined?(class_name, false)
+        if Plugins.const_defined?(class_name)
           register(filename, Plugins.const_get(class_name))
         else
           raise "Expected plugin #{filename} to define class Plugins::#{class_name}, but class name was not found."
