@@ -110,14 +110,14 @@ class Plugins::NetworkInterfaces < Plugin
 
         tokens = net_dev_line.strip.split(':')
         interface = tokens[0]
-        counters = tokens[1].split(/\s+/)
+        counter_values = tokens[1].split(/\s+/)
 
-        rx_bytes = tokens[0]
-        rx_packets = tokens[1]
-        rx_packet_errors = tokens[2]
-        tx_bytes = tokens[8]
-        tx_packets = tokens[9]
-        tx_packet_errors = tokens[10]
+        rx_bytes = counter_values[0]
+        rx_packets = counter_values[1]
+        rx_packet_errors = counter_values[2]
+        tx_bytes = counter_values[8]
+        tx_packets = counter_values[9]
+        tx_packet_errors = counter_values[10]
 
         counters[interface] = {
           :packets => {
