@@ -2,6 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     eventmachine (0.12.10)
+    json (1.5.4)
     log4r (1.1.9)
     sys-uname (0.8.6)
 
@@ -10,5 +11,6 @@ PLATFORMS
 
 DEPENDENCIES
   eventmachine
+  json
   log4r
   sys-uname

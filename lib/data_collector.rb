@@ -52,11 +52,11 @@ class DataCollector
     worker = CollectorWorker.new(plugin)
 
     worker.callback do |result|
-      Logger.debug "Worker for #{plugin.name} completed with result=#{result.inspect}"
+      Logger.debug "Worker for #{plugin.id} completed with result=#{result.inspect}"
       @plugin_results[plugin.id] = result
     end
     worker.errback do |error|
-      Logger.error "Worker for #{plugin.name} failed: #{error}"
+      Logger.error "Worker for #{plugin.id} failed: #{error}"
     end
 
     worker.run

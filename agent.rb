@@ -3,6 +3,10 @@ require 'rubygems'
 require 'bundler/setup'
 require 'optparse'
 require 'yaml'
+require 'json'
+require 'net/http'
+require 'uri'
+
 require File.expand_path(File.join(File.dirname(__FILE__), 'lib', 'platform_info'))
 require File.expand_path(File.join(File.dirname(__FILE__), 'lib', 'logger'))
 require File.expand_path(File.join(File.dirname(__FILE__), 'lib', 'plugin_registry'))
@@ -59,4 +63,13 @@ collector = DataCollector.new(config)
 data[:data] = collector.gather_metrics
 Logger.info "Gathered information from #{PluginRegistry.plugins.size} available plugins"
 
-Logger.debug data[:data]
+# Send the data to the Sherlock server.
+payload = JSON.generate(data)
+
+uri = URI.parse("http://#{config['sherlock']['server']}:#{config['sherlock']['port']}/watson/snapshot")
+res = Net::HTTP.post_form(uri, {:payload => payload})
+if res.code.to_i == 200
+  Logger.info("Snapshot successfully posted the Sherlock server and assigned the ID #{res.body}")
+else
+  Logger.fatal("Snapshot could not be posted to the Sherlock server - error #{res.code}: #{res.body}")
+end

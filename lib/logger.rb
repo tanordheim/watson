@@ -21,7 +21,7 @@ module Logger
   end
 
   def self.fatal(message)
-    logger.error(message)
+    logger.fatal(message)
   end
 
   private
