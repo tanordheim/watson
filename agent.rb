@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'bundler/setup'
+require 'optparse'
 require 'yaml'
 require File.expand_path(File.join(File.dirname(__FILE__), 'lib', 'platform_info'))
 require File.expand_path(File.join(File.dirname(__FILE__), 'lib', 'logger'))
@@ -13,6 +14,23 @@ unless PlatformInfo.supported?
   raise "This platform is not supported by the Watson agent: #{PlatformInfo.system_name}"
 end
 
+# Configure command line parameters.
+options = {:plugins => []}
+OptionParser.new do |opts|
+
+  opts.banner = 'Usage: agent.rb [options]'
+
+  opts.on('-p', '--plugins LIST', 'Run with selected plugins') do |plugins|
+    options[:plugins] = plugins.split(',')
+  end
+
+  opts.on('-h', '--help', 'Show this message') do
+    puts opts
+    exit
+  end
+
+end.parse!
+
 # Load the configuration file.
 config_path = File.expand_path(File.join(File.dirname(__FILE__), 'config.yml'))
 config = open(config_path, 'r') { |f| YAML.load(f) }
@@ -20,6 +38,9 @@ config = open(config_path, 'r') { |f| YAML.load(f) }
 # Print some information when the agent starts.
 Logger.info "Starting Watson agent run for server #{config['sherlock']['server']}:#{config['sherlock']['port']}"
 Logger.info "Identifying self as #{config['node']['id']}"
+
+# Initialize the plugin registry.
+PluginRegistry.initialize!(options[:plugins])
 
 # Build the data collection we're pushing to Sherlock.
 data = {
