@@ -13,7 +13,7 @@ class Plugins::Load < Plugin
     if PlatformInfo.linux?
 
       load_info = open('/proc/loadavg', 'r') { |f| f.read }.strip
-      load_info.split(' ')[0]
+      load_info.split(/\s/)[0]
 
     elsif PlatformInfo.osx?
 
