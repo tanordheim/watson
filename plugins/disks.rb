@@ -72,10 +72,12 @@ class Plugins::Disks < Plugin
       size = tokens[0].to_i * 1024
       used = tokens[1].to_i * 1024
       available = tokens[2].to_i * 1024
+      used_percentage = tokens[3].to_i
 
       usage[device] = {
         :size => size,
         :used => used,
+        :used_percentage => used_percentage,
         :available => available
       }
 
