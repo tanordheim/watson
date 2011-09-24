@@ -40,12 +40,12 @@ class Plugins::NetworkInterfaces < Plugin
         ipv6_address_line = ifconfig.select { |line| line.strip =~ /^inet6 addr\:/ }.first
 
         if ipv4_address_line
-          address_tokens = ipv4_address_line.split(/\s+/)[0].split(':')
+          address_tokens = ipv4_address_line.strip.split(/\s{2,}/)[0].split(':')
           labels[interface][:ipv4_address] = address_tokens[1]
         end
 
         if ipv6_address_line
-          address_tokens = ipv6_address_line.split(/\s+/)[0].split(':')
+          address_tokens = ipv6_address_line.strip.split(/\s{2,}/)[0].split(':')
           labels[interface][:ipv6_address] = address_tokens[1]
         end
         
