@@ -175,36 +175,4 @@ class Plugins::NetworkInterfaces < Plugin
 
   end
  
-#   # Returns a list of all available network interfaces
-#   def network_interfaces
-#     
-#     unless defined?(@network_interfaces)
-# 
-#       @network_interfaces = []
-# 
-#       if PlatformInfo.linux?
-# 
-#         net_dev = IO.readlines('/proc/net/dev')
-#         net_dev.each do |net_dev_line|
-#           tokens = net_dev_line.strip.split(':')
-#           @network_interfaces << tokens[0].strip
-#         end
-# 
-#       elsif PlatformInfo.osx?
-# 
-#         netstat = capture_command_output('netstat', '-id')[1..-1] # Skip the column header line
-#         netstat.each do |netstat_line|
-#           tokens = netstat_line.strip.split(/\s+/)
-#           @network_interfaces << tokens[0] unless @network_interfaces.include?(tokens[0])
-#         end
-# 
-#       else
-#         unsupported_platform
-#       end
-# 
-#     end
-#     @network_interfaces
-# 
-#   end
-
 end
