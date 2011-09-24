@@ -35,7 +35,7 @@ class Plugins::NetworkInterfaces < Plugin
         labels[interface] = {}
 
         # Run the ifconfig command to fetch interface details.
-        ifconfig = capture_command_output('ifconfig', interface)
+        ifconfig = capture_command_output('/sbin/ifconfig', interface)
         ipv4_address_line = ifconfig.select { |line| line.strip =~ /^inet addr\:/ }.first
         ipv6_address_line = ifconfig.select { |line| line.strip =~ /^inet6 addr\:/ }.first
 
